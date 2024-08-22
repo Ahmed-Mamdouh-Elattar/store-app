@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/views/login_view.dart';
 import 'package:store_app/views/onboarding_views.dart';
 
-void main() {
+bool isOnboardingAppear = false;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  isOnboardingAppear = prefs.containsKey('onboarding');
   runApp(const StoreAPP());
 }
 
@@ -10,8 +16,8 @@ class StoreAPP extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: OnboardingViews(),
+    return MaterialApp(
+      home: isOnboardingAppear ? const LoginView() : const OnboardingViews(),
     );
   }
 }
