@@ -9,4 +9,13 @@ class Navigation {
       ),
     );
   }
+
+  void pushReplacement(BuildContext context, {required Widget view}) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => view,
+      ),
+    );
+  }
 }

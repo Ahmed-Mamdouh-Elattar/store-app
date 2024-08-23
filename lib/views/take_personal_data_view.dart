@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/constanst.dart';
-import 'package:store_app/widgets/register_view_body.dart';
+import 'package:store_app/widgets/take_personal_data_view_body.dart';
 
-class RegisterView extends StatelessWidget {
-  const RegisterView({super.key});
+class TakePersonalDataView extends StatelessWidget {
+  const TakePersonalDataView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class RegisterView extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: const Text(kAppBarTitle),
       ),
-      body: const RegisterViewBody(),
+      body: const TakePersonalDataViewBody(),
     );
   }
 }

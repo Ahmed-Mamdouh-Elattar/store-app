@@ -8,12 +8,13 @@ class CustomTextFormField extends StatefulWidget {
     this.prefixIcon,
     this.onSaved,
     this.showVisibiltyIcon = false,
+    this.controller,
   });
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
   final String label;
   final IconData? prefixIcon;
-
+  final TextEditingController? controller;
   final bool showVisibiltyIcon;
 
   @override
@@ -25,6 +26,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       obscureText: obscureText,
       validator: widget.validator,
       onSaved: widget.onSaved,

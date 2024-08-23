@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/constanst.dart';
 import 'package:store_app/widgets/login_view_body.dart';
 
 class LoginView extends StatefulWidget {
@@ -26,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text("Store App"),
+        title: const Text(kAppBarTitle),
       ),
       body: const LoginViewBody(),
     );

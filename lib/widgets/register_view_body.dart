@@ -1,4 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/helper/navigation.dart';
+import 'package:store_app/helper/utils.dart';
+import 'package:store_app/views/take_personal_data_view.dart';
 import 'package:store_app/widgets/custom_button.dart';
 import 'package:store_app/widgets/custom_text_form_field.dart';
 
@@ -12,6 +19,9 @@ class RegisterViewBody extends StatefulWidget {
 class _RegisterViewBodyState extends State<RegisterViewBody> {
   final GlobalKey<FormState> formkey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -39,6 +49,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 height: 20,
               ),
               CustomTextFormField(
+                controller: emailController,
                 validator: (value) {
                   if (value == null || value == '') {
                     return "Email is required";
@@ -55,6 +66,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 height: 20,
               ),
               CustomTextFormField(
+                controller: passwordController,
                 validator: (value) {
                   if (value == null || value == '') {
                     return "Password is required";
@@ -71,9 +83,10 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               ),
               CustomButton(
                 title: "Register",
-                onPressed: () {
+                onPressed: () async {
                   if (formkey.currentState!.validate()) {
                     formkey.currentState!.save();
+                    await userRegister(context);
                   } else {
                     setState(() {
                       autovalidateMode = AutovalidateMode.always;
@@ -89,5 +102,51 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
         ),
       ),
     );
+  }
+
+  Future<void> userRegister(BuildContext context) async {
+    try {
+      final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      print("provider id is ${user.user?.uid}");
+      await savedUserId(user);
+      Utils().showCustomDialog(
+        context,
+        text: "Done✅",
+        showContinueButton: true,
+        onPressedContinueButton: () {
+          Navigation().push(context, view: const TakePersonalDataView());
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        Utils().showCustomDialog(
+          context,
+          text: "Weak password🧐",
+          showCancelButton: true,
+          onPressedCancelButton: () {
+            Navigator.pop(context);
+          },
+        );
+      } else if (e.code == 'email-already-in-use') {
+        Utils().showCustomDialog(
+          context,
+          text: "Email already exists",
+          showCancelButton: true,
+          onPressedCancelButton: () {
+            Navigator.pop(context);
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> savedUserId(UserCredential user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('UID', user.user!.uid);
   }
 }
