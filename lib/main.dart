@@ -17,6 +17,16 @@ class StoreAPP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          shadowColor: Colors.black,
+          elevation: 8,
+          surfaceTintColor: Colors.white,
+        ),
+      ),
       home: isOnboardingAppear ? const LoginView() : const OnboardingViews(),
     );
   }
