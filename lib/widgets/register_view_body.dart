@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/helper/navigation.dart';
-import 'package:store_app/views/register_view.dart';
 import 'package:store_app/widgets/custom_button.dart';
 import 'package:store_app/widgets/custom_text_form_field.dart';
 
-class LoginViewBody extends StatefulWidget {
-  const LoginViewBody({super.key});
+class RegisterViewBody extends StatefulWidget {
+  const RegisterViewBody({super.key});
 
   @override
-  State<LoginViewBody> createState() => _LoginViewBodyState();
+  State<RegisterViewBody> createState() => _RegisterViewBodyState();
 }
 
-class _LoginViewBodyState extends State<LoginViewBody> {
+class _RegisterViewBodyState extends State<RegisterViewBody> {
   final GlobalKey<FormState> formkey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   @override
@@ -31,7 +29,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 width: MediaQuery.sizeOf(context).width * 0.6,
               ),
               const Text(
-                'Login',
+                'Register',
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.w500,
@@ -72,7 +70,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 height: 20,
               ),
               CustomButton(
-                title: "Login",
+                title: "Register",
                 onPressed: () {
                   if (formkey.currentState!.validate()) {
                     formkey.currentState!.save();
@@ -86,21 +84,6 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Don't have an account"),
-                  TextButton(
-                    onPressed: () {
-                      Navigation().push(context, view: const RegisterView());
-                    },
-                    child: const Text("register"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              )
             ],
           ),
         ),
