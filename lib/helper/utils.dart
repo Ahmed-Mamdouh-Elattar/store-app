@@ -33,4 +33,12 @@ class Utils {
       },
     );
   }
+
+  String? validateTextFormField(String? value, String textValidation) {
+    if (value == null || value == "") {
+      return textValidation;
+    } else {
+      return null;
+    }
+  }
 }

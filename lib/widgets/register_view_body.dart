@@ -68,11 +68,8 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               CustomTextFormField(
                 controller: passwordController,
                 validator: (value) {
-                  if (value == null || value == '') {
-                    return "Password is required";
-                  } else {
-                    return null;
-                  }
+                  return Utils()
+                      .validateTextFormField(value, "Password is required");
                 },
                 label: 'Password',
                 prefixIcon: Icons.password,

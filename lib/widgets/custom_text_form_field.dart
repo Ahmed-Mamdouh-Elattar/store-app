@@ -4,7 +4,7 @@ class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
     super.key,
     this.validator,
-    required this.label,
+    this.label,
     this.prefixIcon,
     this.onSaved,
     this.showVisibiltyIcon = false,
@@ -15,7 +15,7 @@ class CustomTextFormField extends StatefulWidget {
   });
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
-  final String label;
+  final String? label;
   final IconData? prefixIcon;
   final TextEditingController? controller;
   final bool showVisibiltyIcon;
@@ -40,7 +40,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       onTap: widget.onPressedTextFormField,
       decoration: InputDecoration(
         hintText: widget.hint,
-        label: Text(widget.label),
+        labelText: widget.label,
         prefixIcon: Icon(widget.prefixIcon),
         suffixIcon: widget.showVisibiltyIcon
             ? IconButton(
