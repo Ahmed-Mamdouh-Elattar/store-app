@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/constanst.dart';
+import 'package:store_app/cubits/products_cubit/products_cubit.dart';
 import 'package:store_app/cubits/user_data_cubit/user_data_cubit.dart';
 
 import 'package:store_app/widgets/products_body.dart';
@@ -23,15 +24,20 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    fetchDataIfUserLoginBefore();
+    fetchUserData();
+    getAllProducts();
   }
 
-  Future<void> fetchDataIfUserLoginBefore() async {
+  Future<void> fetchUserData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.containsKey(kUserId)) {
-      BlocProvider.of<UserDataCubit>(context).getUserData();
+      await BlocProvider.of<UserDataCubit>(context).getUserData();
     }
+  }
+
+  Future<void> getAllProducts() async {
+    await BlocProvider.of<ProductsCubit>(context).getAllProducts();
   }
 
   int viewIndex = 1;

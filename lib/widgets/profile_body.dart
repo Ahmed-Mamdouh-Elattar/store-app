@@ -54,7 +54,10 @@ class ProfileBody extends StatelessWidget {
                   ),
                 ),
               )
-            : const Center(child: CircularProgressIndicator());
+            : state is UserDataLoading
+                ? const Center(child: CircularProgressIndicator())
+                : const Center(
+                    child: Text("There is an error try again later"));
       },
     );
   }
