@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomCircleAvatar extends StatelessWidget {
   const CustomCircleAvatar({
     super.key,
-    required this.imgPicker,
+    this.imgPicker,
     this.backgroundImage,
   });
 

@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -140,12 +142,13 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
         );
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
   Future<void> savedUserId(UserCredential user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(kUserId, user.user!.uid);
+    prefs.setString(kUserEmail, user.user!.email!);
   }
 }
