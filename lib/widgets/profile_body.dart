@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:store_app/cubits/cubit/user_data_cubit.dart';
+import 'package:store_app/cubits/user_data_cubit/user_data_cubit.dart';
 import 'package:store_app/models/user_model.dart';
 import 'package:store_app/widgets/custom_circle_avatar.dart';
 import 'package:store_app/widgets/custom_list_tile.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/constanst.dart';
 
-import 'package:store_app/cubits/cubit/user_data_cubit.dart';
+import 'package:store_app/cubits/user_data_cubit/user_data_cubit.dart';
 import 'package:store_app/firebase_options.dart';
 import 'package:store_app/views/home_view.dart';
 import 'package:store_app/views/login_view.dart';
