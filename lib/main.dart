@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/constanst.dart';
+import 'package:store_app/cubits/products_cubit/products_cubit.dart';
 
 import 'package:store_app/cubits/user_data_cubit/user_data_cubit.dart';
 import 'package:store_app/firebase_options.dart';
@@ -32,6 +33,9 @@ class StoreAPP extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => UserDataCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ProductsCubit(),
         ),
       ],
       child: MaterialApp(

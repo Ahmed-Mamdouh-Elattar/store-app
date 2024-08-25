@@ -82,6 +82,7 @@ class Product {
       };
 }
 
+// ignore: constant_identifier_names
 enum Category { BEAUTY, FRAGRANCES, FURNITURE, GROCERIES }
 
 final categoryValues = EnumValues({
