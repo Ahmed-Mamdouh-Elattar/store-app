@@ -1,5 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/constanst.dart';
+import 'package:store_app/cubits/cubit/user_data_cubit.dart';
 import 'package:store_app/helper/navigation.dart';
+import 'package:store_app/helper/utils.dart';
+import 'package:store_app/views/home_view.dart';
 import 'package:store_app/views/register_view.dart';
 import 'package:store_app/widgets/custom_button.dart';
 import 'package:store_app/widgets/custom_text_form_field.dart';
@@ -14,6 +23,9 @@ class LoginViewBody extends StatefulWidget {
 class _LoginViewBodyState extends State<LoginViewBody> {
   final GlobalKey<FormState> formkey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -41,6 +53,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 height: 20,
               ),
               CustomTextFormField(
+                controller: emailController,
                 validator: (value) {
                   if (value == null || value == '') {
                     return "Email is required";
@@ -57,6 +70,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 height: 20,
               ),
               CustomTextFormField(
+                controller: passwordController,
                 validator: (value) {
                   if (value == null || value == '') {
                     return "Password is required";
@@ -73,9 +87,38 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               ),
               CustomButton(
                 title: "Login",
-                onPressed: () {
+                onPressed: () async {
                   if (formkey.currentState!.validate()) {
                     formkey.currentState!.save();
+                    try {
+                      final credential = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString(kUserId, credential.user!.uid);
+                      BlocProvider.of<UserDataCubit>(context).getUserData();
+                      Navigation()
+                          .pushAndRemoveUntil(context, view: const HomeView());
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        Utils().showCustomDialog(
+                          context,
+                          text: "Email not found",
+                          showCancelButton: true,
+                          onPressedCancelButton: () => Navigator.pop(context),
+                        );
+                      } else if (e.code == 'wrong-password') {
+                        Utils().showCustomDialog(
+                          context,
+                          text: "Wrong password",
+                          showCancelButton: true,
+                          onPressedCancelButton: () => Navigator.pop(context),
+                        );
+                      }
+                    }
                   } else {
                     setState(() {
                       autovalidateMode = AutovalidateMode.always;

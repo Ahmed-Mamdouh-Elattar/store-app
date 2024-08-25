@@ -18,4 +18,14 @@ class Navigation {
       ),
     );
   }
+
+  void pushAndRemoveUntil(BuildContext context, {required Widget view}) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => view,
+      ),
+      (Route<dynamic> route) => false,
+    );
+  }
 }

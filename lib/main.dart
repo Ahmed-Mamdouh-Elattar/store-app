@@ -2,12 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/constanst.dart';
+
 import 'package:store_app/cubits/cubit/user_data_cubit.dart';
 import 'package:store_app/firebase_options.dart';
+import 'package:store_app/views/home_view.dart';
 import 'package:store_app/views/login_view.dart';
 import 'package:store_app/views/onboarding_views.dart';
 
 bool isOnboardingAppear = false;
+bool isUserLoginBefore = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -15,6 +19,7 @@ void main() async {
   );
   final prefs = await SharedPreferences.getInstance();
   isOnboardingAppear = prefs.containsKey('onboarding');
+  isUserLoginBefore = prefs.containsKey(kUserId);
   runApp(const StoreAPP());
 }
 
@@ -40,7 +45,11 @@ class StoreAPP extends StatelessWidget {
             surfaceTintColor: Colors.white,
           ),
         ),
-        home: isOnboardingAppear ? const LoginView() : const OnboardingViews(),
+        home: isOnboardingAppear
+            ? isUserLoginBefore
+                ? const HomeView()
+                : const LoginView()
+            : const OnboardingViews(),
       ),
     );
   }

@@ -1,6 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/constanst.dart';
+import 'package:store_app/cubits/cubit/user_data_cubit.dart';
 
 import 'package:store_app/widgets/products_body.dart';
 import 'package:store_app/widgets/products_category_body.dart';
@@ -17,6 +23,15 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
+    fetchDataIfUserLoginBefore();
+  }
+
+  Future<void> fetchDataIfUserLoginBefore() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey(kUserId)) {
+      BlocProvider.of<UserDataCubit>(context).getUserData();
+    }
   }
 
   int viewIndex = 1;
@@ -32,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
         automaticallyImplyLeading: false,
         title: const Text('Store App'),
       ),
-      body: homeViews[viewIndex],
+      body: homeViews[0],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black.withOpacity(0.1)),

@@ -144,9 +144,9 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
                       if (image != null) {
                         await uploadImgToFirebaseStorage(context);
                         uploadUserDataToFirebaseCloud();
-                        BlocProvider.of<UserDataCubit>(context).getUserData();
 
-                        Navigation().push(context, view: const HomeView());
+                        Navigation().pushAndRemoveUntil(context,
+                            view: const HomeView());
                       } else {
                         Utils()
                             .showCustomDialog(context, text: "Image Missing");
