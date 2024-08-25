@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/constanst.dart';
 import 'package:store_app/helper/navigation.dart';
 import 'package:store_app/helper/utils.dart';
 import 'package:store_app/views/take_personal_data_view.dart';
@@ -112,11 +113,12 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
       Utils().showCustomDialog(
         context,
         text: "Done✅",
-        showContinueButton: true,
-        onPressedContinueButton: () {
-          Navigation().push(context, view: const TakePersonalDataView());
-        },
       );
+      await Future.delayed(
+        const Duration(milliseconds: 500),
+        () => Navigator.pop(context),
+      );
+      Navigation().push(context, view: const TakePersonalDataView());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Utils().showCustomDialog(
@@ -144,6 +146,6 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
 
   Future<void> savedUserId(UserCredential user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('UID', user.user!.uid);
+    prefs.setString(kUserId, user.user!.uid);
   }
 }

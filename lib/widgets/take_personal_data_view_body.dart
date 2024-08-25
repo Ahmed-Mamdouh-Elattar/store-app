@@ -1,7 +1,15 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/constanst.dart';
 import 'package:store_app/helper/utils.dart';
 import 'package:store_app/widgets/custom_button.dart';
+import 'package:store_app/widgets/custom_circle_avatar.dart';
 import 'package:store_app/widgets/custom_text_form_field.dart';
 
 class TakePersonalDataViewBody extends StatefulWidget {
@@ -18,6 +26,9 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   String? gender;
+  XFile? image;
+  Uint8List? imgPicker;
+  String? imgUrl;
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -28,21 +39,32 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CircleAvatar(
-                radius: MediaQuery.sizeOf(context).width * 0.3,
-                child: Stack(
-                  children: [
-                    Image.asset(kDefaultAvatarImage),
-                    Positioned(
-                      top: MediaQuery.sizeOf(context).width * 0.3 * 1.3,
-                      left: MediaQuery.sizeOf(context).width * 0.3 * 1.3,
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.add_a_photo),
-                      ),
+              const SizedBox(
+                height: 20,
+              ),
+              Stack(
+                children: [
+                  CustomCircleAvatar(
+                    imgPicker: imgPicker,
+                    backgroundImage: imgPicker != null
+                        ? MemoryImage(imgPicker!)
+                        : const AssetImage(kDefaultAvatarImage),
+                  ),
+                  Positioned(
+                    top: MediaQuery.sizeOf(context).width * 0.25 * 1.4,
+                    left: MediaQuery.sizeOf(context).width * 0.25 * 1.5,
+                    child: IconButton(
+                      icon: const Icon(Icons.add_a_photo),
+                      onPressed: () async {
+                        await pickImageFromGallery();
+                        setState(() {});
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
               ),
               CustomTextFormField(
                 controller: nameController,
@@ -65,7 +87,7 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
                 items: const [
                   DropdownMenuItem(
                     value: 'Male',
-                    child: Text('Female'),
+                    child: Text('Male'),
                   ),
                   DropdownMenuItem(
                     value: 'Female',
@@ -104,9 +126,11 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
               ),
               CustomButton(
                 title: "Submit",
-                onPressed: () {
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
+                    await uploadImgToFirebaaseStorage(context);
+
+                    uploadUserDataToFirebaseCloud();
                   } else {
                     autovalidateMode = AutovalidateMode.always;
                   }
@@ -117,6 +141,50 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
         ),
       ),
     );
+  }
+
+  void uploadUserDataToFirebaseCloud() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String uId = prefs.getString(kUserId) ?? "";
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    Map<String, dynamic> userData = {
+      "user_id": uId,
+      "name": nameController.text,
+      "gender": gender,
+      "birth_date": birthDateController.text,
+      "image": imgUrl,
+    };
+    users.add(userData);
+  }
+
+  Future<void> uploadImgToFirebaaseStorage(BuildContext context) async {
+    if (image != null) {
+      formKey.currentState!.save();
+      final storageRef = FirebaseStorage.instance.ref();
+      final imgDirRef = storageRef.child("images");
+      final refImgToUpload = imgDirRef.child(image!.name);
+      await refImgToUpload.putFile(File(image!.path));
+      imgUrl = await refImgToUpload.getDownloadURL();
+    } else {
+      Utils().showCustomDialog(
+        context,
+        text: "Image Missing",
+        showCancelButton: true,
+        onPressedCancelButton: () {
+          Navigator.pop(context);
+        },
+      );
+    }
+  }
+
+  Future<void> pickImageFromGallery() async {
+    try {
+      final ImagePicker img = ImagePicker();
+      image = await img.pickImage(source: ImageSource.gallery);
+      imgPicker = await image?.readAsBytes() ?? imgPicker;
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
   Future<void> selectDate(BuildContext context) async {
