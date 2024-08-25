@@ -195,11 +195,9 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
   }
 
   Future<void> pickImageFromGallery() async {
-    try {
-      final ImagePicker img = ImagePicker();
-      image = await img.pickImage(source: ImageSource.gallery);
-      imgPicker = await image?.readAsBytes() ?? imgPicker;
-    } on Exception catch (e) {}
+    final ImagePicker img = ImagePicker();
+    image = await img.pickImage(source: ImageSource.gallery);
+    imgPicker = await image?.readAsBytes() ?? imgPicker;
   }
 
   Future<void> selectDate(BuildContext context) async {

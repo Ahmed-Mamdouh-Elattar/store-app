@@ -24,7 +24,7 @@ class ProfileBody extends StatelessWidget {
                         height: 20,
                       ),
                       CustomCircleAvatar(
-                        backgroundImage: NetworkImage(user!.image),
+                        backgroundImage: NetworkImage(user.image),
                       ),
                       const SizedBox(
                         height: 12,
@@ -36,19 +36,19 @@ class ProfileBody extends StatelessWidget {
                       ),
                       CustomListTile(
                         leadingText: "Email",
-                        textValue: user!.email,
+                        textValue: user.email,
                       ),
                       CustomListTile(
                         leadingText: "Name",
-                        textValue: user!.name,
+                        textValue: user.name,
                       ),
                       CustomListTile(
                         leadingText: "Gender",
-                        textValue: user!.gender,
+                        textValue: user.gender,
                       ),
                       CustomListTile(
                         leadingText: "Birth date",
-                        textValue: user!.birthDate,
+                        textValue: user.birthDate,
                       ),
                     ],
                   ),

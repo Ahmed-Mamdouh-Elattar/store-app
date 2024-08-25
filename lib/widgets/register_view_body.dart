@@ -110,7 +110,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
         email: emailController.text,
         password: passwordController.text,
       );
-      print("provider id is ${user.user?.uid}");
+
       await savedUserId(user);
       Utils().showCustomDialog(
         context,
