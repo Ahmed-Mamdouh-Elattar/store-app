@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_app/constanst.dart';
+import 'package:store_app/cubits/cubit/user_data_cubit.dart';
+import 'package:store_app/models/user_model.dart';
 import 'package:store_app/widgets/custom_circle_avatar.dart';
 
 class ProfileBody extends StatelessWidget {
@@ -7,40 +11,41 @@ class ProfileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+    UserModel user = BlocProvider.of<UserDataCubit>(context).userData!;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             CustomCircleAvatar(
-              backgroundImage: AssetImage(kDefaultAvatarImage),
+              backgroundImage: NetworkImage(user.image),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            Divider(
+            const Divider(
               thickness: 0.5,
               endIndent: 50,
               indent: 50,
             ),
             CustomListTile(
               leadingText: "Email",
-              textValue: "amamdoh306@gmail.com",
+              textValue: user.email,
             ),
             CustomListTile(
               leadingText: "Name",
-              textValue: "Ahemed Mamdouh",
+              textValue: user.name,
             ),
             CustomListTile(
               leadingText: "Gender",
-              textValue: "Male",
+              textValue: user.gender,
             ),
             CustomListTile(
               leadingText: "Birth date",
-              textValue: "2002-06-19",
+              textValue: user.birthDate,
             ),
           ],
         ),

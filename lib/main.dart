@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_app/cubits/cubit/user_data_cubit.dart';
 import 'package:store_app/firebase_options.dart';
 import 'package:store_app/views/login_view.dart';
 import 'package:store_app/views/onboarding_views.dart';
@@ -21,18 +23,25 @@ class StoreAPP extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          shadowColor: Colors.black,
-          elevation: 8,
-          surfaceTintColor: Colors.white,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => UserDataCubit(),
         ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            shadowColor: Colors.black,
+            elevation: 8,
+            surfaceTintColor: Colors.white,
+          ),
+        ),
+        home: isOnboardingAppear ? const LoginView() : const OnboardingViews(),
       ),
-      home: isOnboardingAppear ? const LoginView() : const OnboardingViews(),
     );
   }
 }

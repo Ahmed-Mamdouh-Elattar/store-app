@@ -6,10 +6,12 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/constanst.dart';
+import 'package:store_app/cubits/cubit/user_data_cubit.dart';
 import 'package:store_app/helper/navigation.dart';
 import 'package:store_app/helper/utils.dart';
 import 'package:store_app/views/home_view.dart';
@@ -142,6 +144,8 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
                       if (image != null) {
                         await uploadImgToFirebaseStorage(context);
                         uploadUserDataToFirebaseCloud();
+                        BlocProvider.of<UserDataCubit>(context).getUserData();
+
                         Navigation().push(context, view: const HomeView());
                       } else {
                         Utils()
