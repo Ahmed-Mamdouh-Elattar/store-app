@@ -90,35 +90,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 onPressed: () async {
                   if (formkey.currentState!.validate()) {
                     formkey.currentState!.save();
-                    try {
-                      final credential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString(kUserId, credential.user!.uid);
-                      BlocProvider.of<UserDataCubit>(context).getUserData();
-                      Navigation()
-                          .pushAndRemoveUntil(context, view: const HomeView());
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        Utils().showCustomDialog(
-                          context,
-                          text: "Email not found",
-                          showCancelButton: true,
-                          onPressedCancelButton: () => Navigator.pop(context),
-                        );
-                      } else if (e.code == 'wrong-password') {
-                        Utils().showCustomDialog(
-                          context,
-                          text: "Wrong password",
-                          showCancelButton: true,
-                          onPressedCancelButton: () => Navigator.pop(context),
-                        );
-                      }
-                    }
+                    await loginUserUsingFirebase(context);
                   } else {
                     setState(() {
                       autovalidateMode = AutovalidateMode.always;
@@ -149,5 +121,34 @@ class _LoginViewBodyState extends State<LoginViewBody> {
         ),
       ),
     );
+  }
+
+  Future<void> loginUserUsingFirebase(BuildContext context) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString(kUserId, credential.user!.uid);
+
+      Navigation().pushAndRemoveUntil(context, view: const HomeView());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Utils().showCustomDialog(
+          context,
+          text: "Email not found",
+          showCancelButton: true,
+          onPressedCancelButton: () => Navigator.pop(context),
+        );
+      } else if (e.code == 'wrong-password') {
+        Utils().showCustomDialog(
+          context,
+          text: "Wrong password",
+          showCancelButton: true,
+          onPressedCancelButton: () => Navigator.pop(context),
+        );
+      }
+    }
   }
 }

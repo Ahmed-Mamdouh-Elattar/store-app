@@ -6,24 +6,14 @@ import 'package:store_app/models/user_model.dart';
 import 'package:store_app/widgets/custom_circle_avatar.dart';
 import 'package:store_app/widgets/custom_list_tile.dart';
 
-class ProfileBody extends StatefulWidget {
+class ProfileBody extends StatelessWidget {
   const ProfileBody({super.key});
 
   @override
-  State<ProfileBody> createState() => _ProfileBodyState();
-}
-
-class _ProfileBodyState extends State<ProfileBody> {
-  UserModel? user;
-  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserDataCubit, UserDataState>(
-      listener: (context, state) {
-        if (state is UserDataSuccess) {
-          user = BlocProvider.of<UserDataCubit>(context).userData!;
-        }
-      },
+    return BlocBuilder<UserDataCubit, UserDataState>(
       builder: (context, state) {
+        UserModel? user = BlocProvider.of<UserDataCubit>(context).userData!;
         return state is UserDataSuccess
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

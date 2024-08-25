@@ -47,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
         automaticallyImplyLeading: false,
         title: const Text('Store App'),
       ),
-      body: homeViews[0],
+      body: homeViews[viewIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black.withOpacity(0.1)),
