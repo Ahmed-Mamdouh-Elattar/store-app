@@ -21,14 +21,19 @@ class CustomProductItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
-          Container(
+          SizedBox(
             height: 130,
             width: MediaQuery.sizeOf(context).width * 0.25,
-            decoration: BoxDecoration(
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(product.thumbnail!),
+              child: CachedNetworkImage(
                 fit: BoxFit.fill,
+                imageUrl: product.thumbnail!,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Center(
+                        child: CircularProgressIndicator(
+                            value: downloadProgress.progress)),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
           ),

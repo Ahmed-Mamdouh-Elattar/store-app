@@ -9,6 +9,8 @@ import 'package:store_app/constanst.dart';
 import 'package:store_app/cubits/products_category/products_category_cubit.dart';
 import 'package:store_app/cubits/products_cubit/products_cubit.dart';
 import 'package:store_app/cubits/user_data_cubit/user_data_cubit.dart';
+import 'package:store_app/helper/navigation.dart';
+import 'package:store_app/views/login_view.dart';
 
 import 'package:store_app/widgets/products_body.dart';
 import 'package:store_app/widgets/products_category_body.dart';
@@ -59,6 +61,17 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Store App'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigation().pushAndRemoveUntil(
+                context,
+                view: const LoginView(),
+              );
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: homeViews[viewIndex],
       bottomNavigationBar: Container(

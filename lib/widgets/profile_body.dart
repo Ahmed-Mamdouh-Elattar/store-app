@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:store_app/cubits/user_data_cubit/user_data_cubit.dart';
 import 'package:store_app/models/user_model.dart';
-import 'package:store_app/widgets/custom_circle_avatar.dart';
+
+import 'package:store_app/widgets/custom_circle_image.dart';
 import 'package:store_app/widgets/custom_list_tile.dart';
 
 class ProfileBody extends StatelessWidget {
@@ -23,8 +24,8 @@ class ProfileBody extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      CustomCircleAvatar(
-                        backgroundImage: NetworkImage(user.image),
+                      CustomCircleImage(
+                        image: user.image,
                       ),
                       const SizedBox(
                         height: 12,
