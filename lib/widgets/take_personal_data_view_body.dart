@@ -144,7 +144,9 @@ class _TakePersonalDataViewBodyState extends State<TakePersonalDataViewBody> {
                       if (image != null) {
                         await uploadImgToFirebaseStorage(context);
                         uploadUserDataToFirebaseCloud();
-
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setBool(kUserDataUploaded, true);
                         Navigation().pushAndRemoveUntil(context,
                             view: const HomeView());
                       } else {

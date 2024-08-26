@@ -11,8 +11,10 @@ import 'package:store_app/firebase_options.dart';
 import 'package:store_app/views/home_view.dart';
 import 'package:store_app/views/login_view.dart';
 import 'package:store_app/views/onboarding_views.dart';
+import 'package:store_app/views/take_personal_data_view.dart';
 
 bool isOnboardingAppear = false;
+bool isUserDataUploaded = false;
 bool isUserLoginBefore = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,9 +56,11 @@ class StoreAPP extends StatelessWidget {
           ),
         ),
         home: isOnboardingAppear
-            ? isUserLoginBefore
-                ? const HomeView()
-                : const LoginView()
+            ? isUserDataUploaded
+                ? isUserLoginBefore
+                    ? const HomeView()
+                    : const LoginView()
+                : const TakePersonalDataView()
             : const OnboardingViews(),
       ),
     );

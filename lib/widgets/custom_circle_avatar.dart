@@ -7,8 +7,9 @@ class CustomCircleAvatar extends StatelessWidget {
     super.key,
     this.imgPicker,
     this.backgroundImage,
+    this.child,
   });
-
+  final Widget? child;
   final Uint8List? imgPicker;
   final ImageProvider<Object>? backgroundImage;
   @override
@@ -16,6 +17,7 @@ class CustomCircleAvatar extends StatelessWidget {
     return CircleAvatar(
       radius: MediaQuery.sizeOf(context).width * 0.25,
       backgroundImage: backgroundImage,
+      child: child,
     );
   }
 }

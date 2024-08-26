@@ -120,7 +120,8 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
         const Duration(milliseconds: 500),
         () => Navigator.pop(context),
       );
-      Navigation().push(context, view: const TakePersonalDataView());
+      Navigation()
+          .pushAndRemoveUntil(context, view: const TakePersonalDataView());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Utils().showCustomDialog(
