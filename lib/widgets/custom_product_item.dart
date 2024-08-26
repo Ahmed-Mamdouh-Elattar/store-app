@@ -58,7 +58,10 @@ class CustomProductItem extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  product.category!.name,
+                  product.category!.name
+                      .replaceAll(RegExp('[^A-Za-z0-9]'), ' ')
+                      .toLowerCase()
+                      .capitalizeByWord(),
                   style: const TextStyle(
                       fontSize: 13, fontWeight: FontWeight.w400),
                 ),
@@ -94,5 +97,23 @@ class CustomProductItem extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+// extension StringExtension on String {
+//   String capitalizeFirst() {
+//     if (this.isEmpty) return this;
+//     return this[0].toUpperCase() + this.substring(1);
+//   }
+// }
+extension StringExtension on String {
+  String capitalizeByWord() {
+    if (trim().isEmpty) {
+      return '';
+    }
+    return split(' ')
+        .map((element) =>
+            "${element[0].toUpperCase()}${element.substring(1).toLowerCase()}")
+        .join(" ");
   }
 }

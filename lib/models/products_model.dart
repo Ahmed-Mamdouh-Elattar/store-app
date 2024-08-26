@@ -2,6 +2,8 @@
 //
 //     final productsModel = productsModelFromJson(jsonString);
 
+// ignore_for_file: constant_identifier_names
+
 import 'dart:convert';
 
 ProductsModel productsModelFromJson(String str) =>
@@ -23,7 +25,7 @@ class ProductsModel {
   });
 
   factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
-        products: json["products"] == null
+        products: json["products"] == null || json["products"] == []
             ? []
             : List<Product>.from(
                 json["products"]!.map((x) => Product.fromJson(x))),
@@ -82,14 +84,58 @@ class Product {
       };
 }
 
-// ignore: constant_identifier_names
-enum Category { BEAUTY, FRAGRANCES, FURNITURE, GROCERIES }
+enum Category {
+  BEAUTY,
+  FRAGRANCES,
+  FURNITURE,
+  GROCERIES,
+  HOME_DECORATION,
+  KITCHEN_ACCESSORIES,
+  LAPTOPS,
+  MENS_SHIRTS,
+  MENS_SHOES,
+  MENS_WATCHES,
+  MOBILE_ACCESSORIES,
+  MOTORCYCLE,
+  SKIN_CARE,
+  SMARTPHONES,
+  SPORTS_ACCESSORIES,
+  SUNGLASSES,
+  TABLETS,
+  TOPS,
+  VEHICLE,
+  WOMENS_BAGS,
+  WOMENS_DRESSES,
+  WOMENS_JEWELLERY,
+  WOMENS_SHOES,
+  WOMENS_WATCHES
+}
 
 final categoryValues = EnumValues({
   "beauty": Category.BEAUTY,
   "fragrances": Category.FRAGRANCES,
   "furniture": Category.FURNITURE,
-  "groceries": Category.GROCERIES
+  "groceries": Category.GROCERIES,
+  "home-decoration": Category.HOME_DECORATION,
+  "kitchen-accessories": Category.KITCHEN_ACCESSORIES,
+  "laptops": Category.LAPTOPS,
+  "mens-shirts": Category.MENS_SHIRTS,
+  "mens-shoes": Category.MENS_SHOES,
+  "mens-watches": Category.MENS_WATCHES,
+  "mobile-accessories": Category.MOBILE_ACCESSORIES,
+  "motorcycle": Category.MOTORCYCLE,
+  "skin-care": Category.SKIN_CARE,
+  "smartphones": Category.SMARTPHONES,
+  "sports-accessories": Category.SPORTS_ACCESSORIES,
+  "sunglasses": Category.SUNGLASSES,
+  "tablets": Category.TABLETS,
+  "tops": Category.TOPS,
+  "vehicle": Category.VEHICLE,
+  "womens-bags": Category.WOMENS_BAGS,
+  "womens-dresses": Category.WOMENS_DRESSES,
+  "womens-jewellery": Category.WOMENS_JEWELLERY,
+  "womens-shoes": Category.WOMENS_SHOES,
+  "womens-watches": Category.WOMENS_WATCHES,
 });
 
 class EnumValues<T> {

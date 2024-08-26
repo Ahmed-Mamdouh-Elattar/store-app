@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/constanst.dart';
+import 'package:store_app/cubits/products_category/products_category_cubit.dart';
 import 'package:store_app/cubits/products_cubit/products_cubit.dart';
 import 'package:store_app/cubits/user_data_cubit/user_data_cubit.dart';
 
@@ -26,6 +27,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     fetchUserData();
     getAllProducts();
+    getInitialProductsCategory();
   }
 
   Future<void> fetchUserData() async {
@@ -38,6 +40,11 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> getAllProducts() async {
     await BlocProvider.of<ProductsCubit>(context).getAllProducts();
+  }
+
+  Future<void> getInitialProductsCategory() async {
+    await BlocProvider.of<ProductsCategoryCubit>(context)
+        .getProductsCategory("beauty");
   }
 
   int viewIndex = 1;
@@ -56,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
       body: homeViews[viewIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black.withOpacity(0.1)),
+          border: Border.all(color: Colors.black.withOpacity(0.3)),
         ),
         child: BottomNavigationBar(
           onTap: (value) {

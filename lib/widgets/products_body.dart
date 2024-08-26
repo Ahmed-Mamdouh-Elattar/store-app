@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_app/cubits/products_cubit/products_cubit.dart';
 import 'package:store_app/models/products_model.dart';
 
-import 'package:store_app/widgets/custom_product_item.dart';
+import 'package:store_app/widgets/custom_products_item_list.dart';
 
 class ProductsBody extends StatelessWidget {
   const ProductsBody({super.key});
@@ -17,12 +17,7 @@ class ProductsBody extends StatelessWidget {
               BlocProvider.of<ProductsCubit>(context).products!.products!;
           return Padding(
             padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
-            child: ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                return CustomProductItem(product: products[index]);
-              },
-            ),
+            child: CustomProductsItemList(products: products),
           );
         } else if (state is ProductsLoading) {
           return const Center(child: CircularProgressIndicator());

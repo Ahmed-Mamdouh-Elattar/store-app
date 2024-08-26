@@ -14,6 +14,7 @@ class ProductsCubit extends Cubit<ProductsState> {
         path: "$_baseUrl/products",
         queryParameters: {
           "select": "title,price,rating,category,thumbnail,description",
+          "limit": 200,
         },
       );
       products = ProductsModel.fromJson(productsJson);
