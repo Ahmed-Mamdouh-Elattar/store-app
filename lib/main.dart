@@ -23,6 +23,7 @@ void main() async {
   );
   final prefs = await SharedPreferences.getInstance();
   isOnboardingAppear = prefs.containsKey('onboarding');
+  isUserDataUploaded = prefs.containsKey(kUserDataUploaded);
   isUserLoginBefore = prefs.containsKey(kUserId);
   runApp(const StoreAPP());
 }

@@ -11,14 +11,16 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Text(
-        "$leadingText : ",
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
+      leading: FittedBox(
+        child: Text(
+          "$leadingText : ",
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      title: Text(textValue),
+      title: FittedBox(fit: BoxFit.scaleDown, child: Text(textValue)),
     );
   }
 }
