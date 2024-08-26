@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:store_app/helper/string_extension.dart';
 import 'package:store_app/models/products_model.dart';
 
 class CustomProductItem extends StatelessWidget {
@@ -97,23 +98,5 @@ class CustomProductItem extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-// extension StringExtension on String {
-//   String capitalizeFirst() {
-//     if (this.isEmpty) return this;
-//     return this[0].toUpperCase() + this.substring(1);
-//   }
-// }
-extension StringExtension on String {
-  String capitalizeByWord() {
-    if (trim().isEmpty) {
-      return '';
-    }
-    return split(' ')
-        .map((element) =>
-            "${element[0].toUpperCase()}${element.substring(1).toLowerCase()}")
-        .join(" ");
   }
 }
